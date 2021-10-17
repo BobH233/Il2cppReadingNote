@@ -1106,4 +1106,262 @@ inline static int32_t get_offset_of_m_IsEventExpanded_0() { return static_cast<i
 #define offsetof(TYPE, MEMBER) __builtin_offsetof (TYPE, MEMBER)
 ```
 
-总之这个表就是用来存偏移信息的
+总之这个表就是用来存偏移信息的，之后可以从中获取重要的偏移信息
+
+### g_Il2CppTypeDefinitionSizesTable
+
+```cpp
+extern const Il2CppTypeDefinitionSizes* g_Il2CppTypeDefinitionSizesTable[1788] = 
+{
+	(&g_typeDefinitionSize0),
+	(&g_typeDefinitionSize1),
+	(&g_typeDefinitionSize2),
+	(&g_typeDefinitionSize3),
+	(&g_typeDefinitionSize4),
+	(&g_typeDefinitionSize5),
+	(&g_typeDefinitionSize6),
+	(&g_typeDefinitionSize7),
+	(&g_typeDefinitionSize8),
+    //...
+	(&g_typeDefinitionSize1779),
+	(&g_typeDefinitionSize1780),
+	(&g_typeDefinitionSize1781),
+	(&g_typeDefinitionSize1782),
+	(&g_typeDefinitionSize1783),
+	(&g_typeDefinitionSize1784),
+	(&g_typeDefinitionSize1785),
+	(&g_typeDefinitionSize1786),
+	(&g_typeDefinitionSize1787),
+};
+```
+
+```cpp
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize1437 = { sizeof (ShaderHandleErrors_t2219336884)+ sizeof (RuntimeObject), sizeof(ShaderHandleErrors_t2219336884 ), 0, 0 };
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize1438 = { sizeof (ResetInputAxis_t866062302)+ sizeof (RuntimeObject), sizeof(ResetInputAxis_t866062302 ), 0, 0 };
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize1439 = { sizeof (ThreadedLoadingDebug_t53594427)+ sizeof (RuntimeObject), sizeof(ThreadedLoadingDebug_t53594427 ), 0, 0 };
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize1440 = { sizeof (ProfilerSynchronizeStats_t1082371934)+ sizeof (RuntimeObject), sizeof(ProfilerSynchronizeStats_t1082371934 ), 0, 0 };
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize1441 = { sizeof (MemoryFrameMaintenance_t1219312215)+ sizeof (RuntimeObject), sizeof(MemoryFrameMaintenance_t1219312215 ), 0, 0 };
+```
+
+可以看到，每一项都包含了这个Type的大小，都加上了`sizeof(RuntimeObject)`这个大小，估计是每一个结构前面都会固定一个这样的结构吧
+
+```cpp
+// compiler calcualted values
+typedef struct Il2CppTypeDefinitionSizes
+{
+    uint32_t instance_size;
+    int32_t native_size;
+    uint32_t static_fields_size;
+    uint32_t thread_static_fields_size;
+} Il2CppTypeDefinitionSizes;
+```
+
+`instance_size`就都加上了一个`sizeof (RuntimeObject)`
+
+而`sizeof (native_size)`就没加
+
+但是我看到另外一些TypeDefinition又不是这样的
+
+```cpp
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize123 = { sizeof (PKCS1_t1505584676), -1, sizeof(PKCS1_t1505584676_StaticFields), 0 };
+```
+
+```cpp
+struct PKCS1_t1505584676_StaticFields
+{
+public:
+	// System.Byte[] Mono.Security.Cryptography.PKCS1::emptySHA1
+	ByteU5BU5D_t4116647657* ___emptySHA1_0;
+	// System.Byte[] Mono.Security.Cryptography.PKCS1::emptySHA256
+	ByteU5BU5D_t4116647657* ___emptySHA256_1;
+	// System.Byte[] Mono.Security.Cryptography.PKCS1::emptySHA384
+	ByteU5BU5D_t4116647657* ___emptySHA384_2;
+	// System.Byte[] Mono.Security.Cryptography.PKCS1::emptySHA512
+	ByteU5BU5D_t4116647657* ___emptySHA512_3;
+    //.......
+	inline ByteU5BU5D_t4116647657** get_address_of_emptySHA512_3() { return &___emptySHA512_3; }
+	inline void set_emptySHA512_3(ByteU5BU5D_t4116647657* value)
+	{
+		___emptySHA512_3 = value;
+		Il2CppCodeGenWriteBarrier((&___emptySHA512_3), value);
+	}
+};
+```
+
+其他的一些定义(随机挑选的)
+
+```cpp
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize256 = { sizeof (ReadDelegate_t714865915), sizeof(Il2CppMethodPointer), 0, 0 };
+
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize144 = { sizeof (EncryptedData_t3577548732), -1, 0, 0 };
+
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize288 = { sizeof (AssemblyBuilder_t359885250), -1, 0, 0 };
+```
+
+所以由此我们可以看出，`sizeof (RuntimeObject)`只是我们刚好选取的那几个type有特殊情况，其他的一些结构体并没有这种情况
+
+总体来说这个表存了il2cpp里面结构Type的一些大小信息，还有具体的一些静态成员所占空间大小
+
+### g_MetadataUsages
+
+这个表好像很重要啊，我tm之前改il2cppdumper的代码一直这里出问题，我得好好看看这是个什么玩意儿
+
+```cpp
+extern void** const g_MetadataUsages[6234] = 
+{
+	(void**)(&Contraction_t1589275354_0_0_0_var),
+	(void**)(&Level2Map_t3640798870_0_0_0_var),
+	(void**)(&String_t_0_0_0_var),
+	(void**)(&TypedReference_t1491108119_0_0_0_var),
+	(void**)(&ArgIterator_t539591376_0_0_0_var),
+	(void**)(&Void_t1185182177_0_0_0_var),
+	(void**)(&RuntimeArgumentHandle_t3162137059_0_0_0_var),
+	(void**)(&RuntimeObject_0_0_0_var),
+	(void**)(&Attribute_t861562559_0_0_0_var),
+	(void**)(&Single_t1397266774_0_0_0_var),
+	(void**)(&Int32_t2950945753_0_0_0_var),
+	(void**)(&ObjectU5BU5D_t2843939325_0_0_0_var),
+    //...
+	(void**)(&_stringLiteral559985012),
+	(void**)(&_stringLiteral3837798263),
+	(void**)(&_stringLiteral1364654004),
+	(void**)(&_stringLiteral2973413626),
+	(void**)(&_stringLiteral751398076),
+	(void**)(&_stringLiteral3189027530),
+	(void**)(&_stringLiteral2947573650),
+	(void**)(&_stringLiteral4183622140),
+	(void**)(&_stringLiteral1621028992),
+	(void**)(&_stringLiteral1949155672),
+	(void**)(&_stringLiteral3723644332),
+	(void**)(&_stringLiteral2248280106),
+	(void**)(&_stringLiteral1864861238),
+};
+```
+
+最后的一段很有意思了啊，看起来是一堆的字符串变量，我们跟进去看一下
+
+```cpp
+String_t* _stringLiteral1864861238;
+```
+
+先提一点，实际上，这个`String_t`是一个集成`RuntimeObject`的类
+
+```cpp
+struct  String_t  : public RuntimeObject
+{
+public:
+	// System.Int32 System.String::length
+	int32_t ___length_0;
+	// System.Char System.String::start_char
+	Il2CppChar ___start_char_1;
+
+public:
+	inline static int32_t get_offset_of_length_0() { return static_cast<int32_t>(offsetof(String_t, ___length_0)); }
+	inline int32_t get_length_0() const { return ___length_0; }
+	inline int32_t* get_address_of_length_0() { return &___length_0; }
+	inline void set_length_0(int32_t value)
+	{
+		___length_0 = value;
+	}
+
+	inline static int32_t get_offset_of_start_char_1() { return static_cast<int32_t>(offsetof(String_t, ___start_char_1)); }
+	inline Il2CppChar get_start_char_1() const { return ___start_char_1; }
+	inline Il2CppChar* get_address_of_start_char_1() { return &___start_char_1; }
+	inline void set_start_char_1(Il2CppChar value)
+	{
+		___start_char_1 = value;
+	}
+};
+```
+
+
+
+我们找一下交叉引用
+
+```cpp
+ArgumentException_t132251570 * L_1 = (ArgumentException_t132251570 *)il2cpp_codegen_object_new(ArgumentException_t132251570_il2cpp_TypeInfo_var);
+		ArgumentException__ctor_m1312628991(L_1, (String_t*)_stringLiteral1864861238, /*hidden argument*/NULL);
+```
+
+发现这些变量的地位都相当于一个字符串，然而为什么这里没有直接把字符串写进代码里，字符串的数据实际又是存在哪里的呢？
+
+结合之前的经验，我们可以很清楚的知道，`il2cpp`把用户代码中的字符串从代码中剥离，他们称用户代码中的字符串为`stringLiteral`，而称一些类的类名，方法名等等与系统字符串相关的字符串为`string`，这些字符串的所有数据统一存放于`global-metadata.dat`文件中的特定区域。
+
+对于`string`，通常存在一段连续的数据中，每一个字符串以`\0`结尾
+
+对于`stringLiteral`，字符数据也存在一段连续的数据中，不过两个字符串之间不会用`\0`分隔开，只能通过读取另一个结构体表，得知每一个字符串的起始位置和长度，从而截取出字符串
+
+这里猜测`il2cpp`仅仅只是把这些字符串声明出来了，并且在用到的地方添加了引用，但是我们并没有看到对字符串变量的实际赋值操作，推测应该是在运行加载`global-metadata.dat`后会由`libil2cpp`对字符串进行读取，并对这些变量统一赋值，在之后的代码阅读中可能会提到
+
+
+
+那表前面的那些表项又是什么含义呢，我们大致浏览一下他们的类型吧
+
+```cpp
+const RuntimeType* String_t_0_0_0_var;
+
+const RuntimeType* Attribute_t861562559_0_0_0_var;
+
+const RuntimeType* TypeU5BU5D_t3940880105_0_0_0_var;
+
+const RuntimeMethod* Convert_ToUInt64_m1433697267_RuntimeMethod_var;
+
+RuntimeField* U3CPrivateImplementationDetailsU3E_t3057255364____U24U24fieldU2D11_10_FieldInfo_var;
+```
+
+这又是存`Type`又是存`Method`又是存`Field`的，属实有点看不明白，暂时是啥用处只有等之后看了`libil2cpp`代码内容后估计才弄得明白
+
+## 小结
+
+至此，我们已经分析完了`il2cpp`中两个非常重要的全局表，`g_CodeRegistration`和`g_MetadataRegistration`这两个表
+
+他们内部又分别有非常重要的其他几个表
+
+```cpp
+extern const Il2CppCodeRegistration g_CodeRegistration = 
+{
+	8469,
+	g_MethodPointers, //!!!
+	0,
+	NULL,
+	2351,
+	g_Il2CppGenericMethodPointers, //!!!
+	1268,
+	g_Il2CppInvokerPointers, //!!!
+	2226,
+	g_AttributeGenerators, //!!!
+	202,
+	g_UnresolvedVirtualMethodPointers, //!!!
+	119,
+	g_Il2CppInteropData, //!!!
+};
+```
+
+我们大概知道了`g_CodeRegistration`和`il2cpp`的代码执行密切相关，存储了许多函数的指针
+
+```cpp
+extern const Il2CppMetadataRegistration g_MetadataRegistration = 
+{
+	1496,
+	s_Il2CppGenericTypes, //!!!
+	411,
+	g_Il2CppGenericInstTable, //!!!
+	2511,
+	s_Il2CppGenericMethodFunctions, //!!!
+	6788,
+	g_Il2CppTypeTable, //!!!
+	2730,
+	g_Il2CppMethodSpecTable, //!!!
+	1788,
+	g_FieldOffsetTable, //!!!
+	1788,
+	g_Il2CppTypeDefinitionSizesTable, //!!!
+	5293,
+	g_MetadataUsages, //!!!
+};
+```
+
+我们大概知道了`g_MetadataRegistration`和`il2cpp`的一些额外的元信息密切相关，比如存储有用户代码中要用到的全部字符串指针，还有程序中一些type的定义信息，还有一些函数的参数信息等等
+
+但是在研究过程中我们依然存在很多的疑问，没有弄清许多表的具体含义，所以接下来我们需要更深入的开始阅读`il2cpp`的加载代码，逐步解开之前的一些困惑
+
